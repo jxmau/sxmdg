@@ -1,0 +1,3 @@
+-- Table: Users
+-- Change: Create a new table
+-- Notes: None
