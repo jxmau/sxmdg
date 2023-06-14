@@ -1,7 +1,7 @@
 
 
 use log::{trace};
-use sqlx_md_gen::{cmd::generate::generate};
+use sqlx_md_gen::{cmd::{generate::generate, sheet::sheet}};
 fn main() {
     env_logger::init();
 
@@ -11,8 +11,8 @@ fn main() {
     // Command is the 2nd item on the Iterator
     match args.nth(1) {
         Some(s) => match &s as &str {
-            "generate" => generate(args.nth(2)),
-            "sheet" => todo!(),
+            "generate" => generate(args.nth(0)),
+            "sheet" => sheet(args.nth(0)),
             _ => println!("Invalid Command.")
         },
         None => println!("No command provided.")
