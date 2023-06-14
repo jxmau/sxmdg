@@ -12,10 +12,18 @@ pub struct Metadata {
 
 impl Metadata {
 
+    /// Create a new Struct with the filename
     pub fn new(path: String) -> Self {
         Self {filename: path, table : None, changes: None, notes: None}
     }
 
+    /// Create a new Struct with an empty filename
+    pub fn empty() -> Self {
+        Self {filename: "".to_string(), table : None, changes: None, notes: None}
+    }
+
+
+    /// Parse the content of a file to create a Metadata struct
     pub fn parse_content(&mut self, path: &str) {
 
         // TODO: FS shouldn't be in a METADATA Method.
@@ -46,4 +54,12 @@ impl Metadata {
         trace!("Parsing is complete.");
     }
 
+    // Generate a string with the fields of the Struct.
+    pub fn generate_metadata_string(&self) -> String {
+        format!("-- Table: {}\n-- Change: {}\n-- Notes: {}\n",
+            self.table.clone().unwrap_or("".to_string()),
+            self.changes.clone().unwrap_or("".to_string()),
+            self.notes.clone().unwrap_or("".to_string())
+    )
+    }
 }
