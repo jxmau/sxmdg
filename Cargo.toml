@@ -1,5 +1,5 @@
 [package]
-name = "slqx-md-gen"
+name = "sqlx-md-gen"
 version = "0.1.0"
 edition = "2021"
 

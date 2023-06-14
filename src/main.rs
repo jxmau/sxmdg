@@ -1,7 +1,7 @@
 
 
 use log::{trace};
-use slqx_md_gen::{cmd::generate::generate};
+use sqlx_md_gen::{cmd::generate::generate};
 fn main() {
     env_logger::init();
 
