@@ -27,3 +27,4 @@ Will add a blank form for the Metadata at the beginning of the file. It will onl
 flag/variables | Option | Notes
 --- | --- | --- |
 path | No | Give the path of the SQL file
+--all/-al | No | Cannot be combined with path. Will add a sheet to every sql files in the current directory (pwd)
