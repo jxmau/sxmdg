@@ -1,7 +1,7 @@
 use std::{process::exit, path::PathBuf, fs::File, io::{Read, Write}};
 use log::{info, error, trace};
 
-use crate::metadata::{Metadata, self};
+use crate::metadata::{Metadata};
 
 pub fn sheet(path: Option<String>) {
     println!("{path:?}");

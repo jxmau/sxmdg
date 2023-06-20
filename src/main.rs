@@ -1,7 +1,7 @@
 
 
 use log::{trace};
-use sqlx_md_gen::{cmd::{generate::generate, sheet::sheet}};
+use sqlx_md_gen::{cmd::{generate::generate, sheet::sheet, new::new}};
 fn main() {
     env_logger::init();
 
@@ -13,6 +13,7 @@ fn main() {
         Some(s) => match &s as &str {
             "generate" => generate(args.nth(0)),
             "sheet" => sheet(args.nth(0)),
+            "new" => new(args.nth(0)),
             _ => println!("Invalid Command.")
         },
         None => println!("No command provided.")
