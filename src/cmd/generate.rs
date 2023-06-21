@@ -1,4 +1,4 @@
-use std::{fs::{File}, collections::{HashSet, HashMap}, ffi::OsString, io::Write};
+use std::{fs::{File}, collections::{ HashMap}, ffi::OsString, io::Write};
 
 use log::{error, trace, info};
 
@@ -39,7 +39,6 @@ pub fn generate(path: Option<String>) {
 
 
     let mut tables : HashMap<String, Vec<Metadata>> = HashMap::new();
-    let mut list_metadata : Vec<Metadata> = Vec::new();
 
     // TODO: To refractor later, but seemingly really likely to break something
     info!("Starting to read files acquired.");
@@ -73,19 +72,19 @@ pub fn generate(path: Option<String>) {
         }
     }
     
-    let s = generate_md(tables, &list_metadata);
+    let s = generate_md(tables);
     write_file(s, pwdbis.as_mut_os_string());
     info!("End of the Generate command.");
 }
 
-fn generate_md(tables: HashMap<String, Vec<Metadata>>, list_metadata: &Vec<Metadata> ) -> String {
+fn generate_md(tables: HashMap<String, Vec<Metadata>>) -> String {
     info!("Generating the Database.MD");
-    trace!("Table(s) found : {} -- Number of files parsed : {}", tables.len(), list_metadata.len());
+    trace!("Table(s) found : {}", tables.len());
 
     let mut file_string_builder = String::new();
 
     for (t, metadatas) in tables {
-        trace!("Building table for Table : {t}");
+        trace!("Building table for Table : {t} -- Entries parsed : {}", metadatas.len());
         let mut section_string_builder = String::from(format!("## {t} \n \n "));
         section_string_builder.push_str("Filename | Version | Changes | Notes | \n");
         section_string_builder.push_str(" --- | --- | --- | --- | \n");
