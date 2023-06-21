@@ -7,19 +7,20 @@ pub struct Metadata {
     pub filename: String,
     pub table: Option<String>,
     pub changes: Option<String>,
-    pub notes: Option<String>
+    pub notes: Option<String>,
+    pub version: Option<String>
 }
 
 impl Metadata {
 
     /// Create a new Struct with the filename
     pub fn new(path: String) -> Self {
-        Self {filename: path, table : None, changes: None, notes: None}
+        Self {filename: path, table : None, version: None, changes: None, notes: None}
     }
 
     /// Create a new Struct with an empty filename
     pub fn empty() -> Self {
-        Self {filename: "".to_string(), table : None, changes: None, notes: None}
+        Self {filename: "".to_string(), table : None, version: None, changes: None, notes: None}
     }
 
 
@@ -47,6 +48,7 @@ impl Metadata {
                     "Table" => self.table = v,
                     "Change" => self.changes = v,
                     "Notes" => self.notes = v,
+                    "Version" => self.version = v,
                     _ => (),
                 }
             }
@@ -56,10 +58,11 @@ impl Metadata {
 
     // Generate a string with the fields of the Struct.
     pub fn generate_metadata_string(&self) -> String {
-        format!("-- Table: {}\n-- Change: {}\n-- Notes: {}\n",
+        format!("-- Table: {}\n-- Change: {}\n-- Notes: {}\n-- Version: {}\n",
             self.table.clone().unwrap_or("".to_string()),
             self.changes.clone().unwrap_or("".to_string()),
-            self.notes.clone().unwrap_or("".to_string())
+            self.notes.clone().unwrap_or("".to_string()),
+            self.version.clone().unwrap_or("".to_string())
     )
     }
 }

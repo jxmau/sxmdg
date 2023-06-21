@@ -1,4 +1,4 @@
-use std::{fs::{File}, collections::HashSet, ffi::OsString, io::Write};
+use std::{fs::{File}, collections::{HashSet, HashMap}, ffi::OsString, io::Write};
 
 use log::{error, trace, info};
 
@@ -38,7 +38,7 @@ pub fn generate(path: Option<String>) {
     };
 
 
-    let mut tables : HashSet<String> = HashSet::new();
+    let mut tables : HashMap<String, Vec<Metadata>> = HashMap::new();
     let mut list_metadata : Vec<Metadata> = Vec::new();
 
     // TODO: To refractor later, but seemingly really likely to break something
@@ -51,8 +51,17 @@ pub fn generate(path: Option<String>) {
                         
                         let mut metadata = Metadata::new(s);
                         metadata.parse_content(path);
-                        tables.insert(metadata.table.clone().unwrap_or_else(|| "Unspecified".to_string() ));
-                        list_metadata.push(metadata);
+                        let table = match metadata.table.clone() {
+                            Some(s) if s.eq("") => "Table Unknown".to_string(),
+                            Some(s) => s,
+                            None => "Table Unknown".to_string(),
+                        };
+
+                        match tables.contains_key(&table) {
+                            true => tables.get_mut(&table).unwrap().push(metadata), // We unwrap because we know it's a key already 
+                            false => {tables.insert(table, vec![metadata]);},
+                        };
+
                     }
 
                 },
@@ -69,22 +78,25 @@ pub fn generate(path: Option<String>) {
     info!("End of the Generate command.");
 }
 
-fn generate_md(tables: HashSet<String>, list_metadata: &Vec<Metadata> ) -> String {
+fn generate_md(tables: HashMap<String, Vec<Metadata>>, list_metadata: &Vec<Metadata> ) -> String {
     info!("Generating the Database.MD");
     trace!("Table(s) found : {} -- Number of files parsed : {}", tables.len(), list_metadata.len());
 
     let mut file_string_builder = String::new();
 
-    for t in tables {
+    for (t, metadatas) in tables {
+        trace!("Building table for Table : {t}");
         let mut section_string_builder = String::from(format!("## {t} \n \n "));
-        section_string_builder.push_str("Filename | Changes | Notes | \n");
-        section_string_builder.push_str(" --- | --- | --- | \n");
-        for m in list_metadata {
-            let filename = m.filename.clone();
-            let table_row = format!(" [{}](/{}) | {} | {} \n", filename, filename, m.changes.clone().unwrap_or("None".to_string()), m.notes.clone().unwrap_or("None".to_string()));
-            section_string_builder.push_str(&table_row)
-        }
+        section_string_builder.push_str("Filename | Version | Changes | Notes | \n");
+        section_string_builder.push_str(" --- | --- | --- | --- | \n");
+        for m in metadatas {
 
+            let filename = m.filename.clone();
+            let table_row = format!(" [{}](/{}) | {} | {} | {} \n", filename, filename, m.version.clone().unwrap_or(format!("Unspecified")), m.changes.clone().unwrap_or("None".to_string()), m.notes.clone().unwrap_or("None".to_string()));
+            section_string_builder.push_str(&table_row);
+            
+        }
+        section_string_builder.push_str("\n\n");
         file_string_builder.push_str(&section_string_builder);
     }
     info!("Database.MD has been generated!");
