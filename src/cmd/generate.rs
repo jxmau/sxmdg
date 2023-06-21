@@ -56,11 +56,10 @@ pub fn generate(path: Option<String>) {
                             None => "Table Unknown".to_string(),
                         };
 
-                        match tables.contains_key(&table) {
-                            true => tables.get_mut(&table).unwrap().push(metadata), // We unwrap because we know it's a key already 
-                            false => {tables.insert(table, vec![metadata]);},
-                        };
-
+                        match tables.get_mut(&table) {
+                            Some(metadatas) => metadatas.push(metadata),
+                            None => {tables.insert(table, vec![metadata]);},
+                        }
                     }
 
                 },
