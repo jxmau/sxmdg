@@ -148,7 +148,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "sqlx-md-gen"
+name = "sxmdg"
 version = "0.1.0"
 dependencies = [
  "env_logger",

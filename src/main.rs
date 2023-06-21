@@ -1,7 +1,7 @@
 
 
 use log::{trace};
-use sqlx_md_gen::{cmd::{generate::generate, sheet::sheet}};
+use sxmdg::{cmd::{generate::generate, sheet::sheet}};
 fn main() {
     env_logger::init();
 

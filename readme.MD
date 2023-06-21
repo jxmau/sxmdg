@@ -1,6 +1,6 @@
-# sqlx-md-gen
+# sxmdg (sqlx-cli MarkDown Generator)
 
-sqlx-md-gen is a small piece of software generating docs for sqlx-cli's migrations folder to keep track of the changes made.
+sxmdg is a small piece of software generating docs for sqlx-cli's migrations folder to keep track of the changes made.
 
 ## Requirements
 
